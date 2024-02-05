@@ -1,0 +1,29 @@
+name: Post on Change
+
+on:
+  push:
+    paths:
+      - '**/*.yaml'
+
+jobs:
+  post_on_change:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.x
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run script
+        run: |
+          # Your script to detect changes and perform REST POST request
+          python semp_post.py
+        env:
+          POST_URL: ${{ secrets.POST_URL }}
