@@ -19,7 +19,7 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install datetime inspect json logging requests time pandas pathlib pprint shutil urllib yaml zipfile 
+        run: pip install datetime json logging requests time pandas pathlib pprint shutil urllib yaml zipfile 
 
       - name: Run bash Script on File Change
         run: |
