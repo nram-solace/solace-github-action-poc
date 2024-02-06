@@ -6,19 +6,11 @@
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ##############################################################################
 
-import sys, os
-import argparse
+import sys, os, inspect
 import pprint
 import json
 import requests
-import inspect
-import shutil
-import urllib
-import pathlib
 from requests.auth import HTTPBasicAuth
-from zipfile import ZipFile
-# from os.path import basename
-from datetime import datetime
 from urllib.parse import unquote # for Python 3.7
 
 sys.path.insert(0, os.path.abspath("."))
@@ -110,7 +102,7 @@ class SempHandler:
             headers={"content-type": "application/json"},
             auth=(semp_user, semp_pass),
             data=(json.dumps(json_data) if json_data != None else None),
-            verify=False)
+            verify=True)
         log.trace ('http_post resp : {}'.format(resp))
         log.trace ("resp text : {}".format(resp.text))
         json_resp = json.loads(resp.text)
@@ -177,7 +169,7 @@ class SempHandler:
             headers={"content-type": "application/json"},
             auth=(semp_user, semp_pass),
             data=(json.dumps(json_data) if json_data != None else None),
-            verify=False)
+            verify=True)
         
         #log.info ('SEMP PUT returned: {}'.format(json.dump(resp.json(), indent=4, sort_keys=True)))
         log.info ('SEMP PUT returned: {}'.format(resp.json()))

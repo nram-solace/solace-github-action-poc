@@ -1,5 +1,0 @@
-queueName,deadMsgQueue,subscriptionTopic,accessType
-TestQ1,DMQ/TestQ1,Test/1:Test/2:Test/3:Test/4,non-exclusive
-DMQ/TestQ1,,,
-TestQ2,DMQ/TestQ2,Test/>,
-DMQ/TestQ2,,,

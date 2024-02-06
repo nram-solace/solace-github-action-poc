@@ -7,20 +7,19 @@
 #
 # Requirements:
 #  Python 3
-#  Modules: json, yaml
+#  Modules: json, yaml, urllib3, requests
 #
 # Running:
 # Create queues:
-#   python3 create-queues2.py --input input/nram-test-queues.csv
+#   python3 create-queues2.py --input input/queues.yaml
 #
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ########################################################################
 
 import sys, os
 import argparse
-import json, yaml
+import json
 import pprint
-from urllib.parse import unquote, quote
 
 sys.path.insert(0, os.path.abspath("."))
 from common import LogHandler
@@ -72,6 +71,13 @@ def main(argv):
     # copy input data to Cfg
     cfg['router'] = input_data['router'].copy() 
     cfg['templates'] = input_data['templates'].copy()
+    # read password from environment variable
+    if os.environ.get('SEMP_PASSWORD') is None:
+        print ('ERROR: SEMP_PASSWORD environment variable not set')
+        sys.exit(1)
+    print ('Using SEMP_PASSWORD from environment')
+    cfg['router']['sempPassword'] = os.environ.get('SEMP_PASSWORD')
+    
 
     log_h = LogHandler.LogHandler(cfg)
     log = log_h.get()

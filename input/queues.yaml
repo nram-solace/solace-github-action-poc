@@ -1,0 +1,37 @@
+---
+# Router URL and credentials
+router:
+   label: "nram-dev1-solace-cloud" # used for dir name and logging purposes
+   sempUrl: "https://mr-connection-xoqmdwtfgbe.messaging.solace.cloud:943"
+   sempUser: "nram-dev1-admin"
+   sempPassword: "secret" # set in GitHub secrets SEMP_PASSWORD
+   vpn: "nram-dev1"
+
+# List of queues to create
+queues:
+  - TestQ/GitActions/1
+  - TestQ/GitActions/2
+  - TestQ/GitActions/3
+  - TestQ/GitActions/4
+
+# Template values for creating Queues
+# These values are applied to all queues
+# Any property not listed here will use Solace defaults
+templates:
+   queue:
+      accessType: "non-exclusive"
+      deadMsgQueue: "#DEAD_MSG_QUEUE"
+      maxBindCount: 20
+      maxDeliveredUnackedMsgsPerFlow: 1000
+      maxMsgSize: 1000000
+      maxMsgSpoolUsage: 20000
+      maxRedeliveryCount: 2
+      maxTtl: 0
+      owner: "solace-cloud-client"
+      permission: "no-access"
+      redeliveryEnabled: true
+      respectTtlEnabled: true
+      subscriptionTopic: "" # not implemented yet
+
+system:
+   configFile: "config/system.yaml"
