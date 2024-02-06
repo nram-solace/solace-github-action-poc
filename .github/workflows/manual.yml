@@ -34,6 +34,6 @@ jobs:
       - name: Run Python script
         run: |
           # Your script to detect changes and perform REST POST request
-          python semp_post.py --input $file
+          python scripts/create-queues.py --input $file
         env:
           POST_URL: ${{ secrets.POST_URL }}
