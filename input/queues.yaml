@@ -12,6 +12,8 @@ queues:
   - TestQ/GitActions/1
   - TestQ/GitActions/2
   - TestQ/GitActions/3
+  - TestQ/GitActions/4
+
 
 # Template values for creating Queues
 # These values are applied to all queues
