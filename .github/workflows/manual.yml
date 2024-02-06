@@ -13,6 +13,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get uploaded or updated file names
+        id: get_files
+        run: |
+          # Get the list of changed files
+          files=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+
+          # Set the output variable for later use
+          echo "::set-output name=files::${files}"
+  
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -21,10 +30,20 @@ jobs:
       - name: Install dependencies
         run: pip install datetime logging requests pathlib pyyaml 
 
-      - name: Run Python script
+      - name: Run create-queues2 for each file
         run: |
-          # Your script to detect changes and perform REST POST request
-          #python scripts/create-queues2.py --input $file
-          python scripts/create-queues2.py --input input/test-queues-002.yaml
+          # Iterate over the list of changed files
+          IFS=$'\n' read -rd '' -a files_array <<<"${{ steps.get_files.outputs.files }}"
+          for file in "${files_array[@]}"; do
+            # Run your desired steps for each file
+            echo "Processing file: $file"
+            python scripts/create-queues2.py --input "$file"
+          done
+        env:
+          SEMP_PASSWORD: ${{ secrets.SEMP_PASSWORD }}
+
+      - name: Run Python script - Test
+        run: |
+          python scripts/create-queues2.py --input input/test.yaml
         env:
           SEMP_PASSWORD: ${{ secrets.SEMP_PASSWORD }}
