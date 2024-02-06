@@ -13,8 +13,6 @@ queues:
   - TestQ/GitActions/2
   - TestQ/GitActions/3
 
-
-
 # Template values for creating Queues
 templates:
    # Queue template to use for creating queues.
