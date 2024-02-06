@@ -31,7 +31,7 @@ templates:
       permission: "no-access"
       redeliveryEnabled: true
       respectTtlEnabled: true
-      subscriptionTopic: "test/>"
+      #subscriptionTopic: "test/>" # not implemented yet
 
 system:
    configFile: "config/system.yaml"
