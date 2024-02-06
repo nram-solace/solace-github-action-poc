@@ -19,7 +19,7 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install datetime logging requests pathlib yaml 
+        run: pip install datetime logging requests pathlib pyyaml 
 
       - name: Run Python script
         run: |
