@@ -19,11 +19,11 @@ jobs:
           python-version: 3.x
 
       - name: Install dependencies
-        run: pip install requests
+        run: pip install datetime json logging requests time pandas pathlib pprint shutil urllib yaml zipfile 
 
-      - name: Run script
+      - name: Run Python script
         run: |
           # Your script to detect changes and perform REST POST request
-          python semp_post.py
+          python scripts/create-queues.py --input $file
         env:
           POST_URL: ${{ secrets.POST_URL }}
