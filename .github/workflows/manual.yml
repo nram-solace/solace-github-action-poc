@@ -21,16 +21,6 @@ jobs:
       - name: Install dependencies
         run: pip install datetime json logging requests time pandas pathlib pprint shutil urllib yaml zipfile 
 
-#      - name: Run bash Script on File Change
-#        run: |
-#          if [ "${{ github.event_name }}" == "push" ]; then
-#            for file in $(git diff --name-only ${{ github.sha }}^ ${{ github.sha }}); do
-#              if [[ $file == input/* ]]; then
-#                scripts/create-queues.sh $file
-#              fi
-#            done
-#          fi
-
       - name: Run Python script
         run: |
           # Your script to detect changes and perform REST POST request
