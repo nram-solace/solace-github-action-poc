@@ -9,9 +9,9 @@ router:
 
 # List of queues to create
 queues:
-  - test05/01
-  - test05/02
-  - test05/03
+  - test06/01
+  - test06/02
+  - test06/03
 
 # Template values for creating Queues
 templates:
