@@ -4,14 +4,14 @@ router:
    label: "nram-dev1-solace-cloud" # used for dir name and logging purposes
    sempUrl: "https://mr-connection-xoqmdwtfgbe.messaging.solace.cloud:943"
    sempUser: "nram-dev1-admin"
-   sempPassword: "s3ul6rmga4fhihktckqj43td4f"
+   sempPassword: "secret"
    vpn: "nram-dev1"
 
 # List of queues to create
 queues:
-  - GitActionsTestQ/1
-  - GitActionsTestQ/2
-  - GitActionsTestQ/3
+  - TestQ/GitActions/1
+  - TestQ/GitActions/2
+  - TestQ/GitActions/3
 
 
 
