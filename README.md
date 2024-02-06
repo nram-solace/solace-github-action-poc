@@ -1,3 +1,3 @@
-# solace-action-test1
+# Solace Github Actions POC
 
 Testing Solace self service with Github Actions.
