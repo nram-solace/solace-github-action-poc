@@ -7,11 +7,11 @@
 #
 # Requirements:
 #  Python 3
-#  Modules: json, yaml
+#  Modules: json, yaml, urllib3, requests
 #
 # Running:
 # Create queues:
-#   python3 create-queues2.py --input input/nram-test-queues.csv
+#   python3 create-queues2.py --input input/queues.yaml
 #
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ########################################################################
