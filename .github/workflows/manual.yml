@@ -3,10 +3,10 @@ name: Post on Change
 on:
   push:
     paths:
-      - '**/*.yaml'
+      - 'input/**'
 
 jobs:
-  post_on_change:
+  create_queues:
     runs-on: ubuntu-latest
 
     steps:
