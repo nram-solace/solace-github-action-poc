@@ -9,7 +9,10 @@ router:
 
 # List of queues to create
 queues:
-  - test06/11
+  - GitActionsTestQ/1
+  - GitActionsTestQ/2
+  - GitActionsTestQ/3
+
 
 
 # Template values for creating Queues
