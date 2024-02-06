@@ -18,14 +18,14 @@ log = None
 
 class Queues():
 
-    def __init__(self, semp_h, cfg, input_df, verbose = 0):
+    def __init__(self, semp_h, cfg, input_data, verbose = 0):
         global Verbose
         global log
         Verbose = verbose
         log = cfg['log_handler'].get()
         self.semp_h = semp_h
         self.cfg = cfg
-        self.input_df = input_df
+        self.input_data = input_data
     #--------------------------------------------------------------------
     # get_topic_list
     # Get list of topics from SEMP response
@@ -53,18 +53,18 @@ class Queues():
         semp_h = self.semp_h
         cfg = self.cfg
         sys_cfg = cfg['system']
-        input_df = self.input_df
-
+        input_data = self.input_data
+        
+        msg_vpn_name = cfg['router']['vpn']
         if patch_it:
-            log.info ('Patching Queues in VPN: {} on router: {}'.format(cfg['vpn']['msgVpnNames'][0], cfg['router']['sempUrl']))
+            log.info ('Patching Queues in VPN: {} on router: {}'.format(msg_vpn_name, cfg['router']['sempUrl']))
         else:
-            log.info ('Creating Queues in VPN: {} on router: {}'.format(cfg['vpn']['msgVpnNames'][0], cfg['router']['sempUrl']))
+            log.info ('Creating Queues in VPN: {} on router: {}'.format(msg_vpn_name, cfg['router']['sempUrl']))
 
         # Loop through each row and generate obj for SEMP Req
-        msg_vpn_name = cfg['vpn']['msgVpnNames'][0]
         semp_config_url = '{}/{}/msgVpns'.format(cfg['router']['sempUrl'], sys_cfg['semp']['configUrl'])
         semp_queue_config_url = f"{semp_config_url}/{msg_vpn_name}/queues"
-        num_queues = len(input_df.index)
+        num_queues = len(input_data)
         n = 0
 
         queue_props = []
@@ -77,21 +77,16 @@ class Queues():
         if Verbose > 2:
             print ('Tags:', queue_props)    
         
-        for index, qdata in input_df.iterrows():
+        for qname in input_data:
             n = n + 1
             #print ('data read', d)
             #print (f"VPN name: [{d['msgVpnName']}]")
-            data={}
             data=cfg['templates']['queue'].copy()
-            #data['messageVpn'] = msg_vpn_name
-            queue = qdata['queueName'].strip()
-            log.info ('Processing queue: {} (Patch: {})'.format(queue, patch_it))
-            for prop in queue_props:
-                if prop in qdata:
-                    if isinstance(qdata[prop], str) and qdata[prop].strip() != "":
-                        data[prop] = qdata[prop].strip()
-                    #else:
-                    #    data[prop] = qdata[prop]
+            # add required missing params
+            data['queueName'] = qname
+            data['msgVpnName'] = msg_vpn_name
+            log.info ('Processing queue: {} (Patch: {})'.format(qname, patch_it))
+
             # enable queues
             data['egressEnabled'] = True
             data['ingressEnabled'] = True
@@ -103,31 +98,31 @@ class Queues():
             ###################################################
             # post to router - create queue
             #
-            print (f"\n{n:2}/{num_queues:3} ) Creating queue: <{queue}>")
+            print (f"\n{n:2}/{num_queues:3} ) Creating queue: {qname}")
             resp = semp_h.http_post (semp_queue_config_url, data)
             if patch_it and resp == 'ALREADY_EXISTS':
                 #---------------------------------------------------
                 # If Queue exists, patch it
                 #
-                log.info (f'Queue {queue} exists. Disable and patch it')
+                log.info (f'Queue {qname} exists. Disable and patch it')
                 # disable queue first
                 data0 = {}
-                data0['queueName'] = queue
+                data0['queueName'] = qname
                 data0['msgVpnName'] = msg_vpn_name
                 data0['egressEnabled'] = False
                 #data0['ingressEnabled'] = False
-                semp_h.http_patch (f"{semp_queue_config_url}/{queue}", data0)
+                semp_h.http_patch (f"{semp_queue_config_url}/{qname}", data0)
                 # Patch with new values and enable
-                semp_h.http_patch (f"{semp_queue_config_url}/{queue}", data)
+                semp_h.http_patch (f"{semp_queue_config_url}/{qname}", data)
 
             if patch_it:
                 # remove subscriptions first
-                log.info (f'Reapplying subscriptions on Queue {queue} (PATCH)')
-                semp_queue_sub_config_url = f"{semp_config_url}/{msg_vpn_name}/queues/{queue}/subscriptions"
+                log.info (f'Reapplying subscriptions on Queue {qname} (PATCH)')
+                semp_queue_sub_config_url = f"{semp_config_url}/{msg_vpn_name}/queues/{qname}/subscriptions"
                 resp = semp_h.http_get(semp_queue_sub_config_url)
                 for topic in self.get_topic_list (resp):
                     log.info (f'Deleting subscription topic: [{topic}]')
-                    semp_queue_sub_delete_url = f"{semp_config_url}/{msg_vpn_name}/queues/{queue}/subscriptions/{quote(topic, safe='')}"
+                    semp_queue_sub_delete_url = f"{semp_config_url}/{msg_vpn_name}/queues/{qname}/subscriptions/{quote(topic, safe='')}"
                     log.info(f'SEMP post url: {semp_queue_sub_delete_url}')
                     semp_h.http_delete (semp_queue_sub_delete_url)
             # now add subscription topics
@@ -136,10 +131,10 @@ class Queues():
                 if topic != "":
                     data = {}
                     data['msgVpnName'] = msg_vpn_name
-                    data['queueName'] = queue
+                    data['queueName'] = qname
                     data['subscriptionTopic'] = topic
-                    log.info (f'Adding subscription topic: [{topic}] on queue {queue}')
-                    semp_queue_sub_config_url = f"{semp_config_url}/{msg_vpn_name}/queues/{queue}/subscriptions"
+                    log.info (f'Adding subscription topic: [{topic}] on queue {qname}')
+                    semp_queue_sub_config_url = f"{semp_config_url}/{msg_vpn_name}/queues/{qname}/subscriptions"
                     semp_h.http_post (semp_queue_sub_config_url, data)
 
 
