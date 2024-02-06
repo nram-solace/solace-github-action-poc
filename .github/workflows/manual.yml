@@ -24,6 +24,7 @@ jobs:
       - name: Run Python script
         run: |
           # Your script to detect changes and perform REST POST request
-          python scripts/create-queues2.py --input $file
+          #python scripts/create-queues2.py --input $file
+          python scripts/create-queues2.py --input input/test-queues-002.yaml
         env:
           POST_URL: ${{ secrets.POST_URL }}
