@@ -110,7 +110,7 @@ class SempHandler:
             headers={"content-type": "application/json"},
             auth=(semp_user, semp_pass),
             data=(json.dumps(json_data) if json_data != None else None),
-            verify=False)
+            verify=True)
         log.trace ('http_post resp : {}'.format(resp))
         log.trace ("resp text : {}".format(resp.text))
         json_resp = json.loads(resp.text)
@@ -177,7 +177,7 @@ class SempHandler:
             headers={"content-type": "application/json"},
             auth=(semp_user, semp_pass),
             data=(json.dumps(json_data) if json_data != None else None),
-            verify=False)
+            verify=True)
         
         #log.info ('SEMP PUT returned: {}'.format(json.dump(resp.json(), indent=4, sort_keys=True)))
         log.info ('SEMP PUT returned: {}'.format(resp.json()))
