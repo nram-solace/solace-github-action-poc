@@ -77,7 +77,7 @@ def main(argv):
         print ('ERROR: SEMP_PASSWORD environment variable not set')
         sys.exit(1)
     print ('Using SEMP_PASSWORD from environment')
-    cfg['router']['password'] = os.environ.get('SEMP_PASSWORD')
+    cfg['router']['sempPassword'] = os.environ.get('SEMP_PASSWORD')
     
 
     log_h = LogHandler.LogHandler(cfg)
