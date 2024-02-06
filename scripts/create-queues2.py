@@ -72,6 +72,13 @@ def main(argv):
     # copy input data to Cfg
     cfg['router'] = input_data['router'].copy() 
     cfg['templates'] = input_data['templates'].copy()
+    # read password from environment variable
+    if os.environ.get('SEMP_PASSWORD') is None:
+        print ('ERROR: SEMP_PASSWORD environment variable not set')
+        sys.exit(1)
+    print ('Using SEMP_PASSWORD from environment')
+    cfg['router']['password'] = os.environ.get('SEMP_PASSWORD')
+    
 
     log_h = LogHandler.LogHandler(cfg)
     log = log_h.get()
