@@ -5,7 +5,7 @@
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ##############################################################################
 
-import sys, os
+import sys, os, inspect
 import json
 import pprint
 import inspect

@@ -6,19 +6,11 @@
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ##############################################################################
 
-import sys, os
-import argparse
+import sys, os, inspect
 import pprint
 import json
 import requests
-import inspect
-import shutil
-import urllib
-import pathlib
 from requests.auth import HTTPBasicAuth
-from zipfile import ZipFile
-# from os.path import basename
-from datetime import datetime
 from urllib.parse import unquote # for Python 3.7
 
 sys.path.insert(0, os.path.abspath("."))

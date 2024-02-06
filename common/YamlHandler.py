@@ -5,12 +5,10 @@
 # Ramesh Natarajan (nram), Solace PSG (ramesh.natarajan@solace.com)
 ##############################################################################
 
-import sys, os
+import sys, os, inspect
 import yaml
 import json
 import pprint
-import inspect
-#import pathlib
 
 pp = pprint.PrettyPrinter(indent=4)
 Verbose = 0

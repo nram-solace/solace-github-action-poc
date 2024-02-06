@@ -18,9 +18,8 @@
 
 import sys, os
 import argparse
-import json, yaml
+import json
 import pprint
-from urllib.parse import unquote, quote
 
 sys.path.insert(0, os.path.abspath("."))
 from common import LogHandler
